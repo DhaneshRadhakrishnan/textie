@@ -8,6 +8,7 @@ import {
   Text,
   View,
   ScrollView,
+  TouchableOpacity,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Animated, {
@@ -40,7 +41,7 @@ export default function SignUpScreen() {
   const navigation = useNavigation<SignUpProps>();
   const { applied } = useTheme();
   const { userData, setUserData } = useUserRegistration();
-  
+
   const [firstNameFocused, setFirstNameFocused] = useState(false);
   const [lastNameFocused, setLastNameFocused] = useState(false);
   const buttonScale = useSharedValue(1);
@@ -65,7 +66,7 @@ export default function SignUpScreen() {
   const handleNext = () => {
     let validFirstName = validateFirstName(userData.firstName);
     let validLastName = validateLastName(userData.lastName);
-    
+
     if (validFirstName) {
       Toast.show({
         type: ALERT_TYPE.WARNING,
@@ -90,7 +91,7 @@ export default function SignUpScreen() {
         backgroundColor="transparent"
         translucent
       />
-      
+
       {/* Gradient Background */}
       <LinearGradient
         colors={
@@ -144,16 +145,14 @@ export default function SignUpScreen() {
               className="mb-8"
             >
               <Text
-                className={`text-3xl font-bold mb-3 ${
-                  applied === "light" ? "text-slate-800" : "text-white"
-                }`}
+                className={`text-3xl font-bold mb-3 ${applied === "light" ? "text-slate-800" : "text-white"
+                  }`}
               >
                 Welcome! 👋
               </Text>
               <Text
-                className={`text-base leading-6 ${
-                  applied === "light" ? "text-slate-600" : "text-slate-300"
-                }`}
+                className={`text-base leading-6 ${applied === "light" ? "text-slate-600" : "text-slate-300"
+                  }`}
               >
                 Create your account and start connecting with friends today
               </Text>
@@ -268,15 +267,32 @@ export default function SignUpScreen() {
               </AnimatedPressable>
             </Animated.View>
 
+            {/* Sign In Link */}
+            <Animated.View
+              entering={FadeInDown.delay(1500).springify()}
+              className="flex-row justify-center pt-5"
+            >
+              <Text
+                className={`${applied === "light" ? "text-slate-600" : "text-slate-400"
+                  }`}
+              >
+                Already have an account?{" "}
+              </Text>
+              <TouchableOpacity
+                onPress={() => navigation.navigate("SignInScreen")}
+              >
+                <Text className="font-bold text-[#ffa648]">Sign In</Text>
+              </TouchableOpacity>
+            </Animated.View>
+
             {/* Footer Text */}
             <Animated.View
               entering={FadeInDown.delay(900).springify()}
               className="mt-8"
             >
               <Text
-                className={`text-center text-sm ${
-                  applied === "light" ? "text-slate-500" : "text-slate-400"
-                }`}
+                className={`text-center text-sm ${applied === "light" ? "text-slate-500" : "text-slate-400"
+                  }`}
               >
                 By continuing, you agree to our{" "}
                 <Text className="font-semibold text-blue-500">

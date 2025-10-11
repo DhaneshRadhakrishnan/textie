@@ -35,7 +35,7 @@ export default function SplashScreen() {
 
     useEffect(() => {
         // Logo animations
-        opacity.value = withTiming(1, { duration: 1200, easing: Easing.out(Easing.cubic) });
+        opacity.value = withTiming(1, { duration: 1500, easing: Easing.out(Easing.cubic) });
         scale.value = withSpring(1, { damping: 12, stiffness: 100 });
         logoRotate.value = withSequence(
             withTiming(5, { duration: 600 }),

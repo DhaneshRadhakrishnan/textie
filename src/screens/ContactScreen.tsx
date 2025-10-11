@@ -47,10 +47,12 @@ export default function ContactScreen() {
   const [country, setCountry] = useState<Country | null>(null);
   const [show, setShow] = useState<boolean>(false);
   const [phoneNoFocused, setPhoneNoFocused] = useState(false);
-
+  const [passwordFocused, setPasswordFocused] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
   const { userData, setUserData } = useUserRegistration();
   const [callingCode, setCallingCode] = useState("+94");
   const [phoneNo, setPhoneNo] = useState("");
+  const [password, setPassword] = useState("");
 
   const buttonScale = useSharedValue(1);
 
@@ -91,7 +93,7 @@ export default function ContactScreen() {
       setUserData((previous) => ({
         ...previous,
         countryCode: country ? `+${country.callingCode}` : callingCode,
-        contactNo: phoneNo,
+        contactNo: phoneNo, password: password
       }));
       navigation.replace("AvatarScreen");
     }
@@ -166,9 +168,8 @@ export default function ContactScreen() {
                   <Ionicons name="call" size={24} color="white" />
                 </View>
                 <Text
-                  className={`text-3xl font-bold ${
-                    applied === "light" ? "text-slate-800" : "text-white"
-                  }`}
+                  className={`text-3xl font-bold ${applied === "light" ? "text-slate-800" : "text-white"
+                    }`}
                 >
                   Your Number
                 </Text>
@@ -178,9 +179,8 @@ export default function ContactScreen() {
                 style={{ backgroundColor: "rgba(92, 191, 227, 0.1)" }}
               >
                 <Text
-                  className={`text-sm leading-6 ${
-                    applied === "light" ? "text-slate-700" : "text-slate-300"
-                  }`}
+                  className={`text-sm leading-6 ${applied === "light" ? "text-slate-700" : "text-slate-300"
+                    }`}
                 >
                   🔒 We use your contacts to help you find friends who are
                   already on Textie. Your contacts stay completely private and
@@ -195,9 +195,8 @@ export default function ContactScreen() {
               className="mb-4"
             >
               <Text
-                className={`text-sm font-semibold mb-2 ml-1 ${
-                  applied === "light" ? "text-slate-600" : "text-slate-400"
-                }`}
+                className={`text-sm font-semibold mb-2 ml-1 ${applied === "light" ? "text-slate-600" : "text-slate-400"
+                  }`}
               >
                 SELECT COUNTRY
               </Text>
@@ -247,9 +246,8 @@ export default function ContactScreen() {
               className="mb-8"
             >
               <Text
-                className={`text-sm font-semibold mb-2 ml-1 ${
-                  applied === "light" ? "text-slate-600" : "text-slate-400"
-                }`}
+                className={`text-sm font-semibold mb-2 ml-1 ${applied === "light" ? "text-slate-600" : "text-slate-400"
+                  }`}
               >
                 PHONE NUMBER
               </Text>
@@ -299,6 +297,56 @@ export default function ContactScreen() {
               </View>
             </Animated.View>
 
+            {/* Password Input */}
+            <Animated.View
+              entering={FadeInDown.delay(800).springify()}
+              className="mb-8"
+            >
+              <Text
+                className={`text-sm font-semibold mb-2 ml-1 ${applied === "light" ? "text-slate-600" : "text-slate-400"
+                  }`}
+              >
+                PASSWORD
+              </Text>
+              <View className="bg-white/90 rounded-2xl shadow-lg overflow-hidden">
+                <View className="flex-row items-center p-4">
+                  <View
+                    className="w-10 h-10 rounded-full items-center justify-center mr-3"
+                    style={{ backgroundColor: "#F9AD6E20" }}
+                  >
+                    <Ionicons
+                      name="lock-closed-outline"
+                      size={20}
+                      color={passwordFocused ? "#F9AD6E" : "#94a3b8"}
+                    />
+                  </View>
+                  <TextInput
+                    className="flex-1 font-semibold text-base"
+                    style={{
+                      color: applied === "light" ? "#0f172a" : "#000000",
+                    }}
+                    placeholder="Enter your password"
+                    placeholderTextColor="#94a3b8"
+                    secureTextEntry={!showPassword}
+                    value={password}
+                    onChangeText={setPassword}
+                    onFocus={() => setPasswordFocused(true)}
+                    onBlur={() => setPasswordFocused(false)}
+                  />
+                  <Pressable
+                    onPress={() => setShowPassword(!showPassword)}
+                    className="ml-2"
+                  >
+                    <Ionicons
+                      name={showPassword ? "eye-off-outline" : "eye-outline"}
+                      size={22}
+                      color={applied === "light" ? "#64748b" : "#94a3b8"}
+                    />
+                  </Pressable>
+                </View>
+              </View>
+            </Animated.View>
+
             {/* Next Button with Brand Gradient */}
             <Animated.View entering={FadeInDown.delay(900).springify()}>
               <AnimatedPressable
@@ -335,9 +383,8 @@ export default function ContactScreen() {
                   style={{ marginRight: 6 }}
                 />
                 <Text
-                  className={`text-xs ${
-                    applied === "light" ? "text-slate-500" : "text-slate-400"
-                  }`}
+                  className={`text-xs ${applied === "light" ? "text-slate-500" : "text-slate-400"
+                    }`}
                 >
                   Your privacy is protected by end-to-end encryption
                 </Text>

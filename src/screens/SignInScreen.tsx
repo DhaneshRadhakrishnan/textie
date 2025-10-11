@@ -9,9 +9,10 @@ import {
   View,
   ScrollView,
   Image,
+  Alert,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { Ionicons, AntDesign } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
 import Animated, {
@@ -33,6 +34,8 @@ import CountryPicker, {
 } from "react-native-country-picker-modal";
 import { ALERT_TYPE, Toast } from "react-native-alert-notification";
 import "../../global.css";
+import { authSignIn } from "../api/UserService";
+import { AuthContext } from "../components/AuthProvider";
 
 type SignInProps = NativeStackNavigationProp<RootStack, "SignInScreen">;
 
@@ -52,6 +55,7 @@ export default function SignInScreen() {
   const [showPassword, setShowPassword] = useState(false);
   const [phoneNoFocused, setPhoneNoFocused] = useState(false);
   const [passwordFocused, setPasswordFocused] = useState(false);
+  const auth = useContext(AuthContext);
 
   const buttonScale = useSharedValue(1);
   const logoScale = useSharedValue(1);
@@ -77,7 +81,7 @@ export default function SignInScreen() {
     transform: [{ scale: logoScale.value }],
   }));
 
-  const handleSignIn = () => {
+  const handleSignIn = async () => {
     if (!phoneNo.trim()) {
       Toast.show({
         type: ALERT_TYPE.WARNING,
@@ -96,14 +100,39 @@ export default function SignInScreen() {
     }
 
     // Add your sign-in logic here
-    Toast.show({
-      type: ALERT_TYPE.SUCCESS,
-      title: "Success",
-      textBody: "Signing in...",
-    });
+
+
+    try {
+      console.log("SignIN data before req: " + callingCode + phoneNo + password);
+      const data = await authSignIn(callingCode, phoneNo, password);
+      console.log("Response:", data);
+
+      if (data.status) {
+        Toast.show({
+          type: ALERT_TYPE.SUCCESS,
+          title: "Success",
+          textBody: data.message,
+        });
+        // navigation.replace("HomeScreen");
+        if (auth) {
+          await auth.signUp(data.user.id.toString()); // ← this triggers the stack switch
+        }
+
+      } else {
+        Toast.show({
+          type: ALERT_TYPE.WARNING,
+          title: "Warning",
+          textBody: data.message,
+        });
+
+      }
+
+    } catch (err) {
+      Alert.alert("Error", "Login failed!");
+    }
 
     // Navigate to home or handle authentication
-    // navigation.replace("HomeScreen");
+
   };
 
   return (
@@ -168,16 +197,14 @@ export default function SignInScreen() {
               className="mb-8"
             >
               <Text
-                className={`text-4xl font-bold mb-3 ${
-                  applied === "light" ? "text-slate-800" : "text-white"
-                }`}
+                className={`text-4xl font-bold mb-3 ${applied === "light" ? "text-slate-800" : "text-white"
+                  }`}
               >
                 Welcome Back! 👋
               </Text>
               <Text
-                className={`text-base leading-6 ${
-                  applied === "light" ? "text-slate-600" : "text-slate-300"
-                }`}
+                className={`text-base leading-6 ${applied === "light" ? "text-slate-600" : "text-slate-300"
+                  }`}
               >
                 Sign in to continue chatting with your friends
               </Text>
@@ -191,9 +218,8 @@ export default function SignInScreen() {
               {/* Phone Number Section */}
               <View>
                 <Text
-                  className={`text-sm font-semibold mb-2 ml-1 ${
-                    applied === "light" ? "text-slate-600" : "text-slate-400"
-                  }`}
+                  className={`text-sm font-semibold mb-2 ml-1 ${applied === "light" ? "text-slate-600" : "text-slate-400"
+                    }`}
                 >
                   PHONE NUMBER
                 </Text>
@@ -266,9 +292,8 @@ export default function SignInScreen() {
               {/* Password Input */}
               <View className="mt-4">
                 <Text
-                  className={`text-sm font-semibold mb-2 ml-1 ${
-                    applied === "light" ? "text-slate-600" : "text-slate-400"
-                  }`}
+                  className={`text-sm font-semibold mb-2 ml-1 ${applied === "light" ? "text-slate-600" : "text-slate-400"
+                    }`}
                 >
                   PASSWORD
                 </Text>
@@ -356,9 +381,8 @@ export default function SignInScreen() {
                 }}
               />
               <Text
-                className={`mx-4 font-semibold ${
-                  applied === "light" ? "text-slate-500" : "text-slate-400"
-                }`}
+                className={`mx-4 font-semibold ${applied === "light" ? "text-slate-500" : "text-slate-400"
+                  }`}
               >
                 OR
               </Text>
@@ -407,9 +431,8 @@ export default function SignInScreen() {
               className="flex-row justify-center"
             >
               <Text
-                className={`${
-                  applied === "light" ? "text-slate-600" : "text-slate-400"
-                }`}
+                className={`${applied === "light" ? "text-slate-600" : "text-slate-400"
+                  }`}
               >
                 Don't have an account?{" "}
               </Text>
@@ -426,9 +449,8 @@ export default function SignInScreen() {
               className="mt-8"
             >
               <Text
-                className={`text-center text-xs ${
-                  applied === "light" ? "text-slate-500" : "text-slate-400"
-                }`}
+                className={`text-center text-xs ${applied === "light" ? "text-slate-500" : "text-slate-400"
+                  }`}
               >
                 By signing in, you agree to our{" "}
                 <Text className="font-semibold text-[#ff9e37]">

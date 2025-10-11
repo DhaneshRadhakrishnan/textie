@@ -245,7 +245,15 @@ export default function HomeScreen() {
           {item.unreadCount > 0 && (
             <LinearGradient
               colors={["#5CBFE3", "#F9AD6E"]}
-              className="rounded-full px-2 py-1 ml-2 min-w-[24px] items-center"
+              style={{
+                borderRadius: 9999, // rounded-full
+                paddingHorizontal: 8, // px-2 (Tailwind px-2 ≈ 8px)
+                paddingVertical: 4,   // py-1 (Tailwind py-1 ≈ 4px)
+                marginLeft: 8,        // ml-2 (≈ 8px)
+                minWidth: 24,
+                alignItems: "center",
+                justifyContent: "center", // usually needed to center children
+              }}
             >
               <Text className="text-white text-xs font-bold">
                 {item.unreadCount > 99 ? "99+" : item.unreadCount}

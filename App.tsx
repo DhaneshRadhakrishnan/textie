@@ -53,7 +53,7 @@ function ChatApp() {
         <UserRegistrationProvider>
           <NavigationContainer>
             <Stack.Navigator
-              initialRouteName="SignInScreen" //changed here (splash)
+              initialRouteName="SplashScreen" //changed here (splash)
               screenOptions={{
                 animation: "fade",
               }}
@@ -61,8 +61,8 @@ function ChatApp() {
 
               {auth?.isLoading ? (
                 <Stack.Screen
-                  name="SignInScreen" //changed here (splash)
-                  component={SignInScreen} //changed here (splash)
+                  name="SplashScreen" //changed here (splash)
+                  component={SplashScreen} //changed here (splash)
                   options={{ headerShown: false }}
                 />
               ) : auth?.userId === null ? (
