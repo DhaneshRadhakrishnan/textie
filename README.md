@@ -17,15 +17,6 @@ At its core, Textie leverages a robust **WebSocket architecture** to handle real
 
 ---
 
-┌───────────┐                ┌───────────┐
-│  iOS App  │ ◄───(WS/WSS)──► │  Backend  │
-└───────────┘                │  Server   │
-┌───────────┐                └─────▲─────┘
-│AndroidApp │ ◄───(WS/WSS)─────────┘
-└───────────┘
-
----
-
 ##  Tech Stack
 
 * **Framework:** [React Native](https://reactnative.dev/) (Expo / Bare Workflow - *choose one*)
