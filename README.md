@@ -23,8 +23,8 @@ At its core, Textie leverages a robust **WebSocket architecture** to handle real
 * **Language:** [TypeScript](https://www.typescriptlang.org/)
 * **Styling:** [NativeWind](https://www.nativewind.dev/) (Tailwind CSS)
 * **Real-Time Engine:** WebSockets
-* **State Management:** *[e.g., Zustand / Redux Toolkit / React Context - Please update]*
-* **Backend Support:** *[e.g., Node.js / Express / Socket.io - Please update]*
+* **State Management:** React Context
+* **Backend Support:**  Node.js
 
 ---
 
